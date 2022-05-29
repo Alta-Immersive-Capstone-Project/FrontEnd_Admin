@@ -23,8 +23,16 @@ export default function DasboardAdmin() {
       <div className="container">
         <div className="row">
           <div className="col-4 border-end">
-            <img src={user} alt="User" className="mt-5 w-50" />
-            <div className="mt-3">
+            <div className="mt-5 d-flex gap-4">
+              <img src={user} alt="User" className="w-50" />
+              <div className="mt-5">
+                <h4>Name</h4>
+                <Button className="btnPrint">
+                  <h5>Supervisor</h5>
+                </Button>
+              </div>
+            </div>
+            <div className="mt-5">
               <h4>Dasboard</h4>
               <h4>Manage Boarding House</h4>
               <h4>Submission List</h4>
