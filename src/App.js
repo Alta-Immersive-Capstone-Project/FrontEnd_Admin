@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import DasboardAdmin from "./pages/DasboardAdmin";
 import ListPengajuan from "./pages/ListPengajuan";
+import MakeOffering from "./pages/MakeOffering";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DasboardAdmin />} />
           <Route path="/listPengajuan" element={<ListPengajuan />} />
+          <Route path="/makeOffering" element={<MakeOffering />} />
         </Routes>
       </BrowserRouter>
     </div>
