@@ -114,6 +114,43 @@ function ManageKota() {
             })
     }
 
+    const deleteCity = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                axios.delete(`http://18.136.202.111:8000/cities/${idCity}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                })
+                    .then(data => {
+                        setAddCity('City');
+                        axios.get('http://18.136.202.111:8000/cities', {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        })
+                            .then(data => {
+                                setCity(data.data.data);
+                            })
+                    })
+                    .catch(err => {
+                        console.log(err, ' ==> error delete');
+                    })
+
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    }
+
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
             href=""
@@ -207,8 +244,8 @@ function ManageKota() {
                                     ))}
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <Button variant='warning' onClick={handleShowUpdate}>Edit</Button>
-                            <Button variant='danger'>Delete</Button>
+                            <Button variant='warning' onClick={handleShowUpdate} disabled={addCity === 'City' ? true : false}>Edit</Button>
+                            <Button variant='danger' onClick={() => deleteCity()} disabled={addCity === 'City' ? true : false}>Delete</Button>
                             <Button variant='primary'>Add District</Button>
                         </div>
                         <Table striped bordered hover>
@@ -273,7 +310,7 @@ function ManageKota() {
                         <Modal.Title>Edit City</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input type="text" className='w-100 px-2' placeholder='City Name' value={addCity}  onChange={(e) => {
+                        <input type="text" className='w-100 px-2' placeholder='City Name' value={addCity} onChange={(e) => {
                             setAddCity(e.target.value);
                         }} />
                     </Modal.Body>
