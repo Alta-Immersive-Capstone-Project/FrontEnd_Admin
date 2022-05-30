@@ -6,6 +6,7 @@ import DasboardAdmin from "./pages/DasboardAdmin";
 import ListPengajuan from "./pages/ListPengajuan";
 import MakeOffering from "./pages/MakeOffering";
 import RiwayatKosan from "./pages/RiwayatKosan";
+import ManageKota from "./pages/ManageKota";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/listPengajuan" element={<ListPengajuan />} />
           <Route path="/makeOffering" element={<MakeOffering />} />
           <Route path="/riwayatKosan" element={<RiwayatKosan />} />
+          <Route path="/kota" element={<ManageKota />} />
         </Routes>
       </BrowserRouter>
     </div>
