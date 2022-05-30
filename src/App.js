@@ -6,7 +6,8 @@ import DasboardAdmin from "./pages/DasboardAdmin";
 import ListPengajuan from "./pages/ListPengajuan";
 import MakeOffering from "./pages/MakeOffering";
 import RiwayatKosan from "./pages/RiwayatKosan";
-import ListKosan from "./pages/ListKosan";
+import ListKosan from "./pages/ListKosan.jsx";
+import InputKosan from "./pages/InputKosan.jsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/makeOffering" element={<MakeOffering />} />
           <Route path="/riwayatKosan" element={<RiwayatKosan />} />
           <Route path="/listkosan" element={<ListKosan />} />
+          <Route path="inputkosan" element={<InputKosan />} />
         </Routes>
       </BrowserRouter>
     </div>

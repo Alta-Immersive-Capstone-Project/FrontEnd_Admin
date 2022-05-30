@@ -1,0 +1,50 @@
+.input-body{
+    display: flex;
+    justify-content: center;
+}
+
+.input-wrapbody{
+    width: 80%;
+    margin-top: 30px;
+}
+
+.input-formgroup{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input-price{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input-imagebtn{
+    background-color: #7669E4;
+    color: #fff;
+}
+
+.input-wrapdescription{
+    margin-top: 20px;
+}
+
+.input-wrapbutton{
+    display: flex;
+    justify-content: center;
+}
+
+.input-button{
+    width: 90px;
+    border-radius: 20px;
+    border-color: #7669E4;
+    background-color: #7669E4;
+}
+
+.input-button:hover{
+    border-color: #15133C ;
+    background-color: #15133C ;
+}
+
+.input-title{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
