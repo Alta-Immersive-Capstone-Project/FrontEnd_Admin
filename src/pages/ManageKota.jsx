@@ -9,18 +9,20 @@ import Swal from 'sweetalert2';
 function ManageKota() {
     const [city, setCity] = useState([]);
     const [addCity, setAddCity] = useState('City');
+    const [idCity, setIdCity] = useState();
 
-    const [show, setShow] = useState(false);
+    const [showCreate, setShowCreate] = useState(false);
+    const handleCloseCreate = () => setShowCreate(false);
+    const handleShowCreate = () => setShowCreate(true);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const handleCloseUpdate = () => setShowUpdate(false);
+    const handleShowUpdate = () => setShowUpdate(true);
 
 
     useEffect(() => {
         axios.get('http://18.136.202.111:8000/cities', {
-            headers: {
-                token: localStorage.getItem("token")
-            }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(data => {
                 setCity(data.data.data);
@@ -38,7 +40,14 @@ function ManageKota() {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(data => {
-                handleClose();
+                handleCloseCreate();
+
+                axios.get('http://18.136.202.111:8000/cities', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                })
+                    .then(data => {
+                        setCity(data.data.data);
+                    })
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -56,9 +65,52 @@ function ManageKota() {
                     icon: 'success',
                     title: `${addCity} successfully added`
                 })
+
+                setAddCity('City');
+
             })
             .catch(err => {
                 console.log(err, " ==> ini error create")
+            })
+    }
+
+    const updateCity = () => {
+        const body = {
+            city_name: addCity
+        }
+        axios.put(`http://18.136.202.111:8000/cities/${idCity}`, body, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+            .then(data => {
+                handleCloseUpdate();
+
+                axios.get('http://18.136.202.111:8000/cities', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                })
+                    .then(data => {
+                        setCity(data.data.data);
+                    })
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: `${addCity} successfully updated`
+                })
+
+            })
+            .catch(err => {
+                console.log(err, " ==> Ini dari update");
             })
     }
 
@@ -135,7 +187,7 @@ function ManageKota() {
                     <div className="col-8">
                         <div className="d-flex justify-content-between">
                             <h4 className="">List City</h4>
-                            <Button variant='primary' onClick={handleShow}>Add City</Button>
+                            <Button variant='primary' onClick={handleShowCreate}>Add City</Button>
                             <div />
                         </div>
                         <div className="d-flex my-2 gap-2">
@@ -148,11 +200,14 @@ function ManageKota() {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu as={CustomMenu}>
                                     {city.map((e, i) => (
-                                        <Dropdown.Item key={i} href="#" onClick={() => setAddCity(e.city_name)}>{e.city_name}</Dropdown.Item>
+                                        <Dropdown.Item key={i} href="#" onClick={() => {
+                                            setAddCity(e.city_name);
+                                            setIdCity(e.id);
+                                        }}>{e.city_name}</Dropdown.Item>
                                     ))}
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <Button variant='warning'>Edit</Button>
+                            <Button variant='warning' onClick={handleShowUpdate}>Edit</Button>
                             <Button variant='danger'>Delete</Button>
                             <Button variant='primary'>Add District</Button>
                         </div>
@@ -191,17 +246,18 @@ function ManageKota() {
                 </div>
 
 
-                <Modal show={show} onHide={handleClose}>
+                {/* Add City */}
+                <Modal show={showCreate} onHide={handleCloseCreate}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add City</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input type="text" className='w-100 px-2' placeholder='City Name' value={addCity} onChange={(e) => {
+                        <input type="text" className='w-100 px-2' placeholder='City Name' onChange={(e) => {
                             setAddCity(e.target.value);
                         }} />
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary" onClick={handleCloseCreate}>
                             Close
                         </Button>
                         <Button variant="primary" onClick={() => handleCreateCity()}>
@@ -210,6 +266,26 @@ function ManageKota() {
                     </Modal.Footer>
                 </Modal>
 
+
+                {/* Edit City */}
+                <Modal show={showUpdate} onHide={handleCloseUpdate}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit City</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input type="text" className='w-100 px-2' placeholder='City Name' value={addCity}  onChange={(e) => {
+                            setAddCity(e.target.value);
+                        }} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseUpdate}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => updateCity()}>
+                            Save
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
             </div>
         </>
