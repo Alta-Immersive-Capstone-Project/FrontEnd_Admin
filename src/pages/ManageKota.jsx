@@ -1,9 +1,66 @@
-import React, { useState } from 'react';
-import { Table, Button, FormControl, Dropdown } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { Table, Button, FormControl, Dropdown, Modal } from "react-bootstrap";
 import "../styles/dasboardAdmin.css";
+import '../styles/manageKota.css';
 import user from "../images/user.png";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function ManageKota() {
+    const [city, setCity] = useState([]);
+    const [addCity, setAddCity] = useState('City');
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+
+    useEffect(() => {
+        axios.get('http://18.136.202.111:8000/cities', {
+            headers: {
+                token: localStorage.getItem("token")
+            }
+        })
+            .then(data => {
+                setCity(data.data.data);
+            })
+            .catch(err => {
+                console.log(err, ' => error dari');
+            })
+    }, []);
+
+    const handleCreateCity = () => {
+        const body = {
+            city_name: addCity
+        }
+        axios.post('http://18.136.202.111:8000/cities', body, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+            .then(data => {
+                handleClose();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: `${addCity} successfully added`
+                })
+            })
+            .catch(err => {
+                console.log(err, " ==> ini error create")
+            })
+    }
 
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
@@ -78,30 +135,21 @@ function ManageKota() {
                     <div className="col-8">
                         <div className="d-flex justify-content-between">
                             <h4 className="">List City</h4>
-                            <Button variant='primary'>Add City</Button>
+                            <Button variant='primary' onClick={handleShow}>Add City</Button>
                             <div />
                         </div>
                         <div className="d-flex my-2 gap-2">
                             <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic" as={CustomToggle}>
-                                    City
-                                    <span className='ms-5'>&#x25bc;</span>
+                                <Dropdown.Toggle id="dropdown-basic" as={CustomToggle} className='w-100'>
+                                    <div className='d-flex justify-content-between dropdown-size'>
+                                        {addCity}
+                                        <span className='ms-5'>&#x25bc;</span>
+                                    </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu as={CustomMenu}>
-                                    <Dropdown.Item href="#">Bandung</Dropdown.Item>
-                                    <Dropdown.Item href="#">Jakarta</Dropdown.Item>
-                                    <Dropdown.Item href="#">Yogyakarta</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic" as={CustomToggle}>
-                                    District
-                                    <span className='ms-5'>&#x25bc;</span>
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu as={CustomMenu}>
-                                    <Dropdown.Item href="#">Bandung</Dropdown.Item>
-                                    <Dropdown.Item href="#">Jakarta</Dropdown.Item>
-                                    <Dropdown.Item href="#">Yogyakarta</Dropdown.Item>
+                                    {city.map((e, i) => (
+                                        <Dropdown.Item key={i} href="#" onClick={() => setAddCity(e.city_name)}>{e.city_name}</Dropdown.Item>
+                                    ))}
                                 </Dropdown.Menu>
                             </Dropdown>
                             <Button variant='warning'>Edit</Button>
@@ -141,6 +189,28 @@ function ManageKota() {
                         </Table>
                     </div>
                 </div>
+
+
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add City</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input type="text" className='w-100 px-2' placeholder='City Name' value={addCity} onChange={(e) => {
+                            setAddCity(e.target.value);
+                        }} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => handleCreateCity()}>
+                            Create
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+
             </div>
         </>
     )
