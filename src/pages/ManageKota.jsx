@@ -71,6 +71,8 @@ function ManageKota() {
             })
             .catch(err => {
                 console.log(err, " ==> ini error create")
+                handleCloseCreate();
+                setAddCity('City');
             })
     }
 
@@ -236,7 +238,7 @@ function ManageKota() {
                                     </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu as={CustomMenu}>
-                                    {city.map((e, i) => (
+                                    {city.sort((a,b) => (a.city_name > b.city_name) ? 1 : (b.city_name > a.city_name) ? -1 : 0).map((e, i) => (
                                         <Dropdown.Item key={i} href="#" onClick={() => {
                                             setAddCity(e.city_name);
                                             setIdCity(e.id);
