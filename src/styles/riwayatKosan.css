@@ -1,3 +1,15 @@
 .btnSearch {
-  background-color: #7669e4 !important;
+  background-color: #7669E4;
+  border-color: #7669E4;
+}
+
+.btnSearch:hover{
+  border-color: #15133C ;
+  background-color: #15133C ;
+}
+
+.riwayatkosan-row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,36 +1,13 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import user from "../images/user.png";
 import "../styles/makeOffering.css";
 
 export default function MakeOffering() {
   return (
     <>
       <div className="container">
-        <div className="row">
-          <div className="col-4 border-end">
-            <div className="mt-5 d-flex gap-4">
-              <img src={user} alt="User" className="w-50" />
-              <div className="mt-5">
-                <h4>Name</h4>
-                <Button className="btnGenerate">
-                  <h5>Supervisor</h5>
-                </Button>
-              </div>
-            </div>
-            <div className="mt-5">
-              <h4>Dasboard</h4>
-              <h4>Manage Boarding House</h4>
-              <h4>Submission List</h4>
-              <h4>Boarding House List</h4>
-              <h4>Transaction History by Status</h4>
-              <h4>Transaction History by Boarding House</h4>
-              <h4>Profile</h4>
-              <h4>Log Out</h4>
-            </div>
-          </div>
-
-          <div className="col-8">
+        <div className="makeoffering-row">
+          <div className="col-10">
             <h4 className="my-5">Create Offer</h4>
             <h5>Id Booking</h5>
             <p>RDF 1000293742</p>

@@ -7,30 +7,8 @@ export default function ListPengajuan() {
   return (
     <>
       <div className="container">
-        <div className="row">
-          <div className="col-4 border-end">
-            <div className="mt-5 d-flex gap-4">
-              <img src={user} alt="User" className="w-50" />
-              <div className="mt-5">
-                <h4>Name</h4>
-                <Button className="btnPrint">
-                  <h5>Supervisor</h5>
-                </Button>
-              </div>
-            </div>
-            <div className="mt-5">
-              <h4>Dasboard</h4>
-              <h4>Manage Boarding House</h4>
-              <h4>Submission List</h4>
-              <h4>Boarding House List</h4>
-              <h4>Transaction History by Status</h4>
-              <h4>Transaction History by Boarding House</h4>
-              <h4>Profile</h4>
-              <h4>Log Out</h4>
-            </div>
-          </div>
-
-          <div className="col-8">
+        <div className="listpengajuan-row">
+          <div className="col-10">
             <h4 className="my-5">List</h4>
             <Table striped bordered hover>
               <thead className="text-center">
