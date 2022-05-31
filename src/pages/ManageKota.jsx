@@ -12,6 +12,9 @@ function ManageKota() {
     const [addCity, setAddCity] = useState('City');
     const [idCity, setIdCity] = useState();
 
+    const [district, setDistrict] = useState([]);
+    const [addDistrict, setAddDistrict] = useState('');
+
     const [showCreate, setShowCreate] = useState(false);
     const handleCloseCreate = () => setShowCreate(false);
     const handleShowCreate = () => setShowCreate(true);
@@ -24,12 +27,23 @@ function ManageKota() {
     const handleCloseCreateDistrict = () => setShowCreateDistrict(false);
     const handleShowCreateDistrict = () => setShowCreateDistrict(true);
 
+    const [showUpdateDistrict, setShowUpdateDistrict] = useState(false);
+    const handleCloseUpdateDistrict = () => setShowUpdateDistrict(false);
+    const handleShowUpdateDistrict = () => setShowUpdateDistrict(true);
+
     useEffect(() => {
         axios.get('http://18.136.202.111:8000/cities', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(data => {
                 setCity(data.data.data);
+
+                axios.get('http://18.136.202.111:8000/districts/3', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                })
+                    .then(data => {
+                        setDistrict(data.data.data);
+                    })
             })
             .catch(err => {
                 console.log(err, ' => error dari cities');
@@ -163,11 +177,86 @@ function ManageKota() {
         })
     }
 
+    // CREATE DISTRICT
+    const handleCreateDistrict = () => {
+        const body = {
+            name: addDistrict,
+            latitude: position.lat,
+            longitude: position.lng,
+            city_id: idCity
+        }
+        axios.post('http://18.136.202.111:8000/districts', body, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+            .then(data => {
+                handleCloseCreateDistrict();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: `${addDistrict} successfully added`
+                })
+
+            })
+            .catch(err => {
+                console.log(err, " ==> ini error create")
+                handleCloseCreateDistrict();
+            })
+    }
+
+
+    // UPDATE District
+    const updateDistrict = () => {
+        const body = {
+            name: district.name,
+            latitude: district.latitude,
+            longitude: district.longitude
+        }
+        axios.put(`http://18.136.202.111:8000/districts/3`, body, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+            .then(data => {
+                handleCloseUpdate();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: `${addCity} successfully updated`
+                })
+
+            })
+            .catch(err => {
+                console.log(err, " ==> Ini dari update");
+            })
+    }
+
 
     // DROPDOWN
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
-            href=''
+            href='/#'
             ref={ref}
             onClick={(e) => {
                 e.preventDefault();
@@ -298,7 +387,7 @@ function ManageKota() {
                             </Dropdown>
                             <Button variant='warning' onClick={handleShowUpdate} disabled={addCity === 'City' ? true : false}>Edit</Button>
                             <Button variant='danger' onClick={() => deleteCity()} disabled={addCity === 'City' ? true : false}>Delete</Button>
-                            <Button variant='primary' onClick={handleShowCreateDistrict} >Add District</Button>
+                            <Button variant='primary' onClick={handleShowCreateDistrict} disabled={addCity === 'City' ? true : false} >Add District</Button>
                         </div>
                         <Table striped bordered hover>
                             <thead className="text-center">
@@ -311,9 +400,9 @@ function ManageKota() {
                             <tbody className="text-center">
                                 <tr>
                                     <td>1</td>
-                                    <td>Bojongsoang</td>
+                                    <td>{district.name}</td>
                                     <td>
-                                        <Button variant='warning'>Edit</Button>
+                                        <Button variant='warning' onClick={handleShowUpdateDistrict}>Edit</Button>
                                         <Button variant='danger'>Delete</Button>
                                     </td>
 
@@ -377,15 +466,16 @@ function ManageKota() {
                     </Modal.Footer>
                 </Modal>
 
+
                 {/* Add DISTRICT */}
                 <Modal show={showCreateDistrict} onHide={handleCloseCreateDistrict}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add District</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input type="text" className='w-100 px-2 mb-3' placeholder='District Name' />
+                        <input type="text" className='w-100 px-2 mb-3' placeholder='District Name' onChange={(e) => setAddDistrict(e.target.value)} />
 
-                        <MapContainer id='map' className='mx-auto' center={center} zoom={12} scrollWheelZoom={false}>
+                        <MapContainer id='map' className='mx-auto' center={position} zoom={12} scrollWheelZoom={false}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -395,11 +485,11 @@ function ManageKota() {
                         <div className="d-flex justify-content-evenly">
                             <div>
                                 <h6>Latitude</h6>
-                                <input type="text" value={position.lat} readOnly disabled/>
+                                <input type="text" value={position.lat} readOnly disabled />
                             </div>
                             <div>
                                 <h6>Longitude</h6>
-                                <input type="text" value={position.lng} readOnly disabled/>
+                                <input type="text" value={position.lng} readOnly disabled />
                             </div>
                         </div>
 
@@ -408,8 +498,44 @@ function ManageKota() {
                         <Button variant="secondary" onClick={handleCloseCreateDistrict}>
                             Close
                         </Button>
-                        <Button variant="primary">
+                        <Button variant="primary" onClick={addCity === 'City' ? () => console.log('error') : handleCreateDistrict}>
                             Create
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/* Edit District */}
+                <Modal show={showUpdateDistrict} onHide={handleCloseUpdateDistrict}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit City</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input type="text" className='w-100 px-2 mb-3' placeholder='District Name' value={district.name} onChange={(e) => setDistrict({...district, name: e.target.value})} />
+
+                        <MapContainer id='map' className='mx-auto' center={position} zoom={12} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <DraggableMarker />
+                        </MapContainer>
+                        <div className="d-flex justify-content-evenly">
+                            <div>
+                                <h6>Latitude</h6>
+                                <input type="text" value={district.latitude} readOnly disabled />
+                            </div>
+                            <div>
+                                <h6>Longitude</h6>
+                                <input type="text" value={district.longitude} readOnly disabled />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseUpdateDistrict}>
+                            Close
+                        </Button>
+                        <Button variant="primary">
+                            Save
                         </Button>
                     </Modal.Footer>
                 </Modal>
