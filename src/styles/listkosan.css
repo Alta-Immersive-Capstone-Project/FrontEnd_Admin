@@ -1,0 +1,31 @@
+.list-wraptitle{
+    display: flex;
+    margin-top: 50px;
+}
+
+.listkosan-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-search{
+    width:80vh;
+    display: flex;
+    justify-content: right;
+}
+
+#list-search2{
+    height: 50px;
+    width: 350px;
+    margin-top: 80px;
+}
+
+.list-title{
+    width: 40vh;
+    margin-top: 50px;
+}
+
+.btnSearch {
+    background-color: #7669e4;
+  }

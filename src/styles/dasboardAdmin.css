@@ -1,3 +1,24 @@
 .btnPrint {
-  background-color: #7669e4 !important;
+  background-color: #7669e4;
+  border-color: #7669E4;
+  color: #fff;
+}
+
+.btnPrint:hover {
+  border-color: #15133C ;
+  background-color: #15133C ;
+}
+
+.container{
+  margin-top: -100px;
+}
+
+.dashboard-row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dashboard-rent{
+  margin-left: 270px;
 }

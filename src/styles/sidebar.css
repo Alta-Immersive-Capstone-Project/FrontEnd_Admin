@@ -1,0 +1,40 @@
+#column-sidebar{
+    margin-left: 40px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(186, 183, 183);
+    box-shadow: 2px 2px 2px rgba(87, 87, 87, 0.5);
+    width: 270px;
+}
+
+.row-sidebar{
+    display: flex;
+    align-items: center;
+    height: 850px;
+}
+
+.btn-sidebar {
+    background-color: #7669e4 !important;
+    border-color: #7669e4;
+    height: 32px;
+  }
+
+.btn-sidebar:hover{
+    background-color: #7669e4;
+    border-color: #7669e4;
+}
+
+.image-wrap{
+margin-left: 30px;
+margin-top: -20px;
+}
+
+.image-user{
+    width: 90px;
+    height: 90px;
+    margin-top: 30px;
+}
+
+.title-sidebar{
+    margin: 40px 20px 40px 20px;
+}
