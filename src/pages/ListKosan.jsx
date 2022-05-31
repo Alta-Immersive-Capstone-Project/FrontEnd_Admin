@@ -1,5 +1,4 @@
 import React from "react";
-import user from "../images/user.png";
 import { Button, Form, FormControl, Table } from "react-bootstrap";
 import "../styles/listkosan.css";
 
@@ -7,31 +6,8 @@ function ListKosan() {
   return (
     <div>
       <div className="container">
-        <div className="row">
-          <div className="col-4 border-end">
-            <div className="mt-5 d-flex gap-4">
-              <img src={user} alt="User" className="w-50" />
-              <div className="mt-5">
-                <h4>Name</h4>
-                <Button className="btnPrint">
-                  <h5>Supervisor</h5>
-                </Button>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <h4>Dasboard</h4>
-              <h4>Manage Boarding House</h4>
-              <h4>Submission List</h4>
-              <h4>Boarding House List</h4>
-              <h4>Transaction History by Status</h4>
-              <h4>Transaction History by Boarding House</h4>
-              <h4>Profile</h4>
-              <h4>Log Out</h4>
-            </div>
-          </div>
-
-          <div className="col-8">
+        <div className="listkosan-row">
+          <div className="col-10">
             <div className="list-wraptitle">
               <div className="list-title">
                 <h4 className="my-5">List Boarding House</h4>

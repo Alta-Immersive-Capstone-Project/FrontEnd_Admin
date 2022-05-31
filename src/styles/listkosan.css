@@ -3,6 +3,12 @@
     margin-top: 50px;
 }
 
+.listkosan-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .list-search{
     width:80vh;
     display: flex;
@@ -21,5 +27,5 @@
 }
 
 .btnSearch {
-    background-color: #7669e4 !important;
+    background-color: #7669e4;
   }

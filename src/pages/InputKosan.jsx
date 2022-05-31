@@ -7,15 +7,21 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "../styles/inputkosan.css";
 
 function InputKosan() {
+  const Navigate = useNavigate();
+
+  const clickBack = () => {
+    Navigate("/dashboard");
+  };
   return (
     <div className="input-body">
       <div className="input-wrapbody">
         <div>
           <div className="input-title">
-            <h3>Input Kosan</h3>
+            <h3 onClick={clickBack}>Input Kosan</h3>
           </div>
           <div className="input-formName">
             <Form>
