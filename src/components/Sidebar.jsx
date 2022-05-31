@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import user from "../images/user.png";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
@@ -8,7 +8,7 @@ function Sidebar() {
   const Navigate = useNavigate();
 
   const clickDashboard = () => {
-    Navigate("/dashboard");
+    Navigate("/");
   };
 
   const clickManage = () => {
@@ -33,7 +33,7 @@ function Sidebar() {
 
   const clickLogout = () => {
     localStorage.clear();
-    Navigate("/");
+    Navigate("/login");
   };
 
   return (
