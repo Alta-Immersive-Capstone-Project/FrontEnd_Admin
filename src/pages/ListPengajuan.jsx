@@ -8,7 +8,7 @@ export default function ListPengajuan() {
     <>
       <div className="container">
         <div className="listpengajuan-row">
-          <div className="col-10">
+          <div className="col-12">
             <h4 className="my-5">List</h4>
             <Table striped bordered hover>
               <thead className="text-center">

@@ -7,7 +7,7 @@ export default function MakeOffering() {
     <>
       <div className="container">
         <div className="makeoffering-row">
-          <div className="col-10">
+          <div className="col-12">
             <h4 className="my-5">Create Offer</h4>
             <h5>Id Booking</h5>
             <p>RDF 1000293742</p>

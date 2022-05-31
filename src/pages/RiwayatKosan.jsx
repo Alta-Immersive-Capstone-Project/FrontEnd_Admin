@@ -21,7 +21,7 @@ export default function RiwayatKosan() {
     <>
       <div className="container">
         <div className="riwayatkosan-row">
-          <div className="col-10">
+          <div className="col-12">
             <h4 className="my-5">History Boarding_House_Name</h4>
             <div className="d-flex gap-3 mb-4">
               <Dropdown>

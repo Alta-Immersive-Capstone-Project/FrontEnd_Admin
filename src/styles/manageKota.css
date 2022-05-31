@@ -6,3 +6,24 @@
     width: 465px;
     height: 300px;
 }
+
+.btn-manage{
+    background-color: #7669E4;
+    border-color: #7669E4;
+    color: #fff;
+}
+
+.btn-manage:hover{
+    border-color: #15133C ;
+    background-color: #15133C ;
+}
+
+.btn-manage:disabled{
+    background-color: #7669E4;
+    border-color: #7669E4;
+    color: #fff;
+}
+
+#btn-addmanage{
+    margin-left: -50px;
+}

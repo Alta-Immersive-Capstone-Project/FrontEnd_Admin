@@ -7,7 +7,7 @@ function ListKosan() {
     <div>
       <div className="container">
         <div className="listkosan-row">
-          <div className="col-10">
+          <div className="col-12">
             <div className="list-wraptitle">
               <div className="list-title">
                 <h4 className="my-5">List Boarding House</h4>

@@ -22,7 +22,7 @@ export default function DasboardAdmin() {
       <div className="dashboard-body">
         <div className="container">
           <div className="dashboard-row">
-            <div className="col-10">
+            <div className="col-12">
               <div className="d-flex justify-content-center gap-5 pt-5  mt-5">
                 <Card className="text-center p-4">
                   <Card.Title>

@@ -35,6 +35,7 @@ function Testing() {
               <Route path="/makeOffering" element={<MakeOffering />} />
               <Route path="/riwayatKosan" element={<RiwayatKosan />} />
               <Route path="/listkosan" element={<ListKosan />} />
+              <Route path="/managekota" element={<ManageKota />} />
             </Routes>
           </div>
         </div>

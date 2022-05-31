@@ -12,7 +12,7 @@ function Sidebar() {
   };
 
   const clickManage = () => {
-    Navigate("/");
+    Navigate("/managekota");
   };
 
   const clickBoardingList = () => {
@@ -56,15 +56,15 @@ function Sidebar() {
                 </div>
               </div>
               <div className="title-sidebar">
-                <h4 onClick={clickDashboard}>Dasboard</h4>
-                <h4 onClick={clickManage}>Manage Boarding House</h4>
-                <h4 onClick={clickBoardingList}>Boarding House List</h4>
-                <h4 onClick={clickStatus}>Transaction History by Status</h4>
-                <h4 onClick={clickBoardingHouse}>
+                <h5 onClick={clickDashboard}>Dasboard</h5>
+                <h5 onClick={clickManage}>Manage Boarding House</h5>
+                <h5 onClick={clickBoardingList}>Boarding House List</h5>
+                <h5 onClick={clickStatus}>Transaction History by Status</h5>
+                <h5 onClick={clickBoardingHouse}>
                   Transaction History by Boarding House
-                </h4>
-                <h4 onClick={clickAdd}>Add Boarding House</h4>
-                <h4 onClick={clickLogout}>Log Out</h4>
+                </h5>
+                <h5 onClick={clickAdd}>Add Boarding House</h5>
+                <h5 onClick={clickLogout}>Log Out</h5>
               </div>
             </div>
           </div>
