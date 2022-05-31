@@ -6,6 +6,7 @@ import DasboardAdmin from "./pages/DasboardAdmin";
 import ListPengajuan from "./pages/ListPengajuan";
 import MakeOffering from "./pages/MakeOffering";
 import RiwayatKosan from "./pages/RiwayatKosan";
+import ManageKota from "./pages/ManageKota";
 import ListKosan from "./pages/ListKosan.jsx";
 import InputKosan from "./pages/InputKosan.jsx";
 import Sidebar from "./components/Sidebar.jsx";
