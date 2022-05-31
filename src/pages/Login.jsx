@@ -38,11 +38,19 @@ function Login() {
       return;
     }
 
+    console.log("testing");
+
     axios
       .post("http://18.136.202.111:8000/login", body)
       .then((data) => {
         localStorage.setItem("token", data.data.data);
-        navigate("/dashboard");
+
+        setMessage("Success Login!");
+        setColor("success");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       })
       .catch((err) => {
         setMessage("Email and password not Match!");
