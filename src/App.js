@@ -7,6 +7,8 @@ import ListPengajuan from "./pages/ListPengajuan";
 import MakeOffering from "./pages/MakeOffering";
 import RiwayatKosan from "./pages/RiwayatKosan";
 import ManageKota from "./pages/ManageKota";
+import ListKosan from "./pages/ListKosan.jsx";
+import InputKosan from "./pages/InputKosan.jsx";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/makeOffering" element={<MakeOffering />} />
           <Route path="/riwayatKosan" element={<RiwayatKosan />} />
           <Route path="/kota" element={<ManageKota />} />
+          <Route path="/listkosan" element={<ListKosan />} />
+          <Route path="inputkosan" element={<InputKosan />} />
         </Routes>
       </BrowserRouter>
     </div>
