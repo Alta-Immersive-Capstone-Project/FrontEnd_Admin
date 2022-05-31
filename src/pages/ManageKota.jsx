@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Table, Button, FormControl, Dropdown, Modal } from "react-bootstrap";
+import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
 import "../styles/dasboardAdmin.css";
 import '../styles/manageKota.css';
 import user from "../images/user.png";
@@ -19,6 +20,9 @@ function ManageKota() {
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
 
+    const [showCreateDistrict, setShowCreateDistrict] = useState(false);
+    const handleCloseCreateDistrict = () => setShowCreateDistrict(false);
+    const handleShowCreateDistrict = () => setShowCreateDistrict(true);
 
     useEffect(() => {
         axios.get('http://18.136.202.111:8000/cities', {
@@ -28,10 +32,12 @@ function ManageKota() {
                 setCity(data.data.data);
             })
             .catch(err => {
-                console.log(err, ' => error dari');
+                console.log(err, ' => error dari cities');
             })
     }, []);
 
+
+    // CREATE CITY
     const handleCreateCity = () => {
         const body = {
             city_name: addCity
@@ -76,6 +82,8 @@ function ManageKota() {
             })
     }
 
+
+    // UPDATE CITY
     const updateCity = () => {
         const body = {
             city_name: addCity
@@ -116,6 +124,8 @@ function ManageKota() {
             })
     }
 
+
+    // DELETE CITY
     const deleteCity = () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -153,15 +163,17 @@ function ManageKota() {
         })
     }
 
+
+    // DROPDOWN
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
-            href=""
+            href=''
             ref={ref}
             onClick={(e) => {
                 e.preventDefault();
                 onClick(e);
             }}
-            className="btn border"
+            className="btn border m-0"
         >
             {children}
 
@@ -196,6 +208,44 @@ function ManageKota() {
             );
         },
     );
+    // END DROPDOWN
+
+    const center = {
+        lat: -6.200000,
+        lng: 106.816666,
+    }
+
+    // MAPS
+    const [position, setPosition] = useState(center)
+    function DraggableMarker() {
+        const markerRef = useRef(null)
+        const eventHandlers = useMemo(
+            () => ({
+                dragend() {
+                    const marker = markerRef.current
+                    if (marker != null) {
+                        setPosition(marker.getLatLng())
+                    }
+                },
+            }),
+            [],
+        )
+
+        return (
+            <Marker
+                draggable={true}
+                eventHandlers={eventHandlers}
+                position={position}
+                ref={markerRef}>
+                <Popup minWidth={90}>
+                    <span>
+                        Drag Marker
+                    </span>
+                </Popup>
+            </Marker>
+        )
+    }
+
 
     return (
         <>
@@ -238,7 +288,7 @@ function ManageKota() {
                                     </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu as={CustomMenu}>
-                                    {city.sort((a,b) => (a.city_name > b.city_name) ? 1 : (b.city_name > a.city_name) ? -1 : 0).map((e, i) => (
+                                    {city.sort((a, b) => (a.city_name > b.city_name) ? 1 : (b.city_name > a.city_name) ? -1 : 0).map((e, i) => (
                                         <Dropdown.Item key={i} href="#" onClick={() => {
                                             setAddCity(e.city_name);
                                             setIdCity(e.id);
@@ -248,7 +298,7 @@ function ManageKota() {
                             </Dropdown>
                             <Button variant='warning' onClick={handleShowUpdate} disabled={addCity === 'City' ? true : false}>Edit</Button>
                             <Button variant='danger' onClick={() => deleteCity()} disabled={addCity === 'City' ? true : false}>Delete</Button>
-                            <Button variant='primary'>Add District</Button>
+                            <Button variant='primary' onClick={handleShowCreateDistrict} >Add District</Button>
                         </div>
                         <Table striped bordered hover>
                             <thead className="text-center">
@@ -281,6 +331,7 @@ function ManageKota() {
                                 </tr>
                             </tbody>
                         </Table>
+
                     </div>
                 </div>
 
@@ -322,6 +373,43 @@ function ManageKota() {
                         </Button>
                         <Button variant="primary" onClick={() => updateCity()}>
                             Save
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/* Add DISTRICT */}
+                <Modal show={showCreateDistrict} onHide={handleCloseCreateDistrict}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add District</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input type="text" className='w-100 px-2 mb-3' placeholder='District Name' />
+
+                        <MapContainer id='map' className='mx-auto' center={center} zoom={12} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <DraggableMarker />
+                        </MapContainer>
+                        <div className="d-flex justify-content-evenly">
+                            <div>
+                                <h6>Latitude</h6>
+                                <input type="text" value={position.lat} readOnly disabled/>
+                            </div>
+                            <div>
+                                <h6>Longitude</h6>
+                                <input type="text" value={position.lng} readOnly disabled/>
+                            </div>
+                        </div>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseCreateDistrict}>
+                            Close
+                        </Button>
+                        <Button variant="primary">
+                            Create
                         </Button>
                     </Modal.Footer>
                 </Modal>
