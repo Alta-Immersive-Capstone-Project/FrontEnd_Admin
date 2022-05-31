@@ -30,7 +30,7 @@ function Testing() {
             }}
           >
             <Routes>
-              <Route path="/dashboard" element={<DasboardAdmin />} />
+              <Route path="/" element={<DasboardAdmin />} />
               <Route path="/listPengajuan" element={<ListPengajuan />} />
               <Route path="/makeOffering" element={<MakeOffering />} />
               <Route path="/riwayatKosan" element={<RiwayatKosan />} />
@@ -49,7 +49,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/inputkosan" element={<InputKosan />} />
           <Route path="*" element={<Testing />} />
         </Routes>
