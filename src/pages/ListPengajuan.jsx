@@ -1,7 +1,6 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
 import "../styles/listPengajuan.css";
-import user from "../images/user.png";
 
 export default function ListPengajuan() {
   return (
