@@ -501,7 +501,7 @@ function ManageKota() {
                     <Modal.Body>
                         <input type="text" className="w-100 px-2 mb-3" placeholder="District Name" onChange={(e) => setAddDistrict(e.target.value)} />
 
-                        <MapContainer id="map" className="mx-auto" center={position} zoom={12} scrollWheelZoom={false}>
+                        <MapContainer id="map" className="mx-auto" center={position} zoom={13} scrollWheelZoom={false}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -540,7 +540,7 @@ function ManageKota() {
                         }
                         } />
 
-                        <MapContainer id="map" className="mx-auto" center={position} zoom={12} scrollWheelZoom={false}>
+                        <MapContainer id="map" className="mx-auto" center={position} zoom={13} scrollWheelZoom={false}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
