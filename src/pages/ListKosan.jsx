@@ -1,38 +1,141 @@
-import React from "react";
-import { Button, Form, FormControl, Table } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  ButtonGroup,
+  Form,
+  FormControl,
+  Table,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
+import axios from "axios";
 import "../styles/listkosan.css";
+import { useNavigate } from "react-router-dom";
 
 function ListKosan() {
+  const [listKosts, setListKosts] = useState([]);
+  const [city, setCity] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get(
+          "http://18.136.202.111:8000/houses",
+
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        const { data: response2 } = await axios.get(
+          "http://18.136.202.111:8000/cities",
+
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        setListKosts(response.data);
+        setCity(response2.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // DROPDOWN
+  const getHouseByCity = async (id) => {
+    try {
+      const { data: response } = await axios.get(
+        `http://18.136.202.111:8000/cities/${id}/districts/houses`,
+
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+
+      setListKosts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // search
+  const handleSearchPosts = (input) => {
+    const filter = listKosts.filter((el) => {
+      if (el.title.toLowerCase().indexOf(input.toLowerCase()) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    setFilteredPosts(filter);
+  };
+
+  const returnDataPosts = () => {
+    if (searchInput.length > 0) {
+      return filteredPosts;
+    } else {
+      return listKosts;
+    }
+  };
+
   return (
     <div>
-      <div className="container">
+      <div className="container pt-5">
         <div className="listkosan-row">
           <div className="col-12">
-            <div className="list-wraptitle">
-              <div className="list-title">
-                <h4 className="my-5">List Boarding House</h4>
-              </div>
-              <div className="list-search">
-                <div id="list-search2" className="d-flex gap-3 mb-4">
-                  <Form className="d-flex gap-3">
-                    <FormControl
-                      id="formControl"
-                      type="search"
-                      aria-label="Search"
-                    />
-                    <Button className="btnSearch">Search</Button>
-                  </Form>
-                </div>
-              </div>
+            <h4 className="my-5">List Boarding House</h4>
+            <div className="d-flex gap-3">
+              <ButtonGroup className="mb-3">
+                <DropdownButton
+                  as={ButtonGroup}
+                  title="Sort by City"
+                  id="bg-nested-dropdown"
+                  variant="light"
+                  style={{ cursor: "pointer" }}
+                >
+                  {city.map((el, i) => (
+                    <Dropdown.Item
+                      key={i}
+                      onClick={() => getHouseByCity(el.id)}
+                    >
+                      {el.city_name}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
+              </ButtonGroup>
+              <Form>
+                <FormControl
+                  id="formControl"
+                  type="text"
+                  placeholder="Search Boarding House"
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+
+                    handleSearchPosts(e.target.value);
+                  }}
+                />
+              </Form>
             </div>
 
             <Table striped bordered hover>
               <thead className="text-center">
                 <tr>
                   <th>No</th>
-                  <th>ID</th>
                   <th>Boarding House</th>
-                  <th>City</th>
                   <th>District</th>
                   <th>Owner</th>
                   <th>Contact</th>
@@ -40,38 +143,25 @@ function ListKosan() {
                 </tr>
               </thead>
               <tbody className="text-center">
-                <tr>
-                  <td>1</td>
-                  <td>KST 123</td>
-                  <td>Panorama</td>
-                  <td>Jakarta Selatan</td>
-                  <td>Setiabudi</td>
-                  <td>Budi</td>
-                  <td>0812311923</td>
-                  <td>
-                    <Button className="btnSearch">View</Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                {returnDataPosts()?.map((el, i) => (
+                  <tr style={{ cursor: "pointer" }} key={i}>
+                    <td>{i + 1}</td>
+                    <td>{el.title}</td>
+                    <td>{el.district}</td>
+                    <td>{el.owner_name}</td>
+                    <td>{el.owner_phone}</td>
+                    <td>
+                      <Button
+                        className="btnSearch"
+                        onClick={() => {
+                          navigate(`/riwayatKosan`);
+                        }}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </div>
