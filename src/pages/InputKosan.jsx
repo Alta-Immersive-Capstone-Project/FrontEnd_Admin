@@ -3,8 +3,6 @@ import {
   Form,
   Row,
   Col,
-  InputGroup,
-  FormControl,
   Button,
   Dropdown
 } from "react-bootstrap";
@@ -14,26 +12,25 @@ import { useNavigate } from "react-router-dom";
 import "../styles/inputkosan.css";
 
 function InputKosan() {
-  const [fields, setFields] = useState({
-    name: '', // title (string)
-    address: '', // address (string)
-    district: '', // districtID (int)
-    gender: '',
-    slotRoom: '', // slot room (int)
-    available: '', // available (int)
-    owner: '', // owner name (string)
-    ownerPhone: '', // owner phone (string)
-    description: '', // brief (string)
-    latitude: '', // float
-    longitude: '' // float
-  });
+  const [title, setTitle] = useState(''); // title (string)
+  const [address, setAddress] = useState(''); // address (string)
+  const [districtData, setDistrictData] = useState(0); // dist_id (int)
+  const [gender, setGender] = useState(null); // type (string)
+  const [slotRoom, setSlotRoom] = useState(0); // slot_room (int)
+  const [available, setAvailable] = useState(0); // available (int)
+  const [owner, setOwner] = useState(''); // owner_name (string)
+  const [ownerPhone, setOwnerPhone] = useState(''); // owner_phone (string)
+  const [description, setDescription] = useState(''); // brief (string)
+  // const [latitude, setLatitude] = useState(''); // latitude (float)
+  // const [longitude, setLongitude] = useState(''); // longitude (float)
+
   const [city, setCity] = useState([]);
   const [cityDropdown, setCityDropdown] = useState('City');
 
   const [district, setDistrict] = useState([]);
   const [districtDropdown, setDistrictDropdown] = useState('District');
 
-  const [genderDropdown, setGenderDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const Navigate = useNavigate();
 
@@ -46,6 +43,10 @@ function InputKosan() {
         console.log(err, ' ==> ini error city');
       })
   }, []);
+
+  const clickBack = () => {
+    Navigate("/");
+  };
 
   const getDistricts = async (id) => {
     const response = await axios.get(`http://18.136.202.111:8000/cities/${id}/districts`, {
@@ -96,7 +97,8 @@ function InputKosan() {
   }
 
   // DROPDOWN
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  const [cityIsActive, setCityIsActive] = useState(true);
+  const CustomToggleCity = React.forwardRef(({ children, onClick }, ref) => (
     <a
       href="/#"
       ref={ref}
@@ -104,7 +106,37 @@ function InputKosan() {
         e.preventDefault();
         onClick(e);
       }}
-      className="btn border m-0 w-100"
+      className={cityIsActive ? "btn border m-0 w-100" : "btn border border-danger m-0 w-100"}
+    >
+      {children}
+    </a>
+  ));
+
+  const [districtIsActive, setDistrictIsActive] = useState(true);
+  const CustomToggleDistrict = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href="/#"
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+      className={districtIsActive ? "btn border m-0 w-100" : "btn border border-danger m-0 w-100"}
+    >
+      {children}
+    </a>
+  ));
+
+  const [genderIsActive, setGenderIsActive] = useState(true);
+  const CustomToggleGender = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href="/#"
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+      className={genderIsActive ? "btn border m-0 w-100" : "btn border border-danger m-0 w-100"}
     >
       {children}
     </a>
@@ -121,9 +153,9 @@ function InputKosan() {
           className={className}
           aria-labelledby={labeledBy}
         >
-          <FormControl
+          <input
             autoFocus
-            className="mx-3 my-2 w-auto"
+            className="border rounded p-2 mx-3 my-2 w-auto"
             placeholder="Type to filter..."
             onChange={(e) => setValue(e.target.value)}
             value={value}
@@ -140,40 +172,79 @@ function InputKosan() {
   );
   // END DROPDOWN
 
-  const clickBack = () => {
-    Navigate("/dashboard");
-  };
+  // SUBMIT
+  const [validated, setValidated] = useState(false);
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
+
+    setValidated(true);
+
+    if (form.checkValidity()) {
+      const body = {
+        title,
+        address,
+        district_id: districtData,
+        type: gender,
+        slot_room: parseInt(slotRoom),
+        available: parseInt(available),
+        owner_name: owner,
+        owner_phone: ownerPhone,
+        brief: description,
+        latitude: position.lat,
+        longitude: position.lng
+      }
+
+      setIsLoading(true);
+      axios.post('http://18.136.202.111:8000/houses', body, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        .then(data => {
+          setTimeout(clickBack(), 1500);
+        })
+        .catch(err => {
+          console.log(err, ' ==> error submit')
+        })
+        .finally(() => {
+          setIsLoading(false);
+        })
+    };
+
+  }
 
   return (
     <div className="input-body">
       <div className="input-wrapbody">
-        <Form>
+        <Form noValidate validated={validated} onSubmit={handleSubmit} >
           <div className="input-title">
             <h3 onClick={clickBack}>Input Kosan</h3>
           </div>
           <div className="input-formName">
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlInput1"
-            >
+            <Form.Group className="mb-3" controlId="validationCustom01">
               <Form.Control
+                required
                 type="text"
                 placeholder="Input Boarding House Name"
+                onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Group>
           </div>
           <div className="input-formtop">
             <Row>
               <Col xs={6}>
-                <Form.Group className="mb-3">
-                  <Form.Control type="text" placeholder="Enter Address" />
+                <Form.Group className="mb-3" controlId="validationCustom02">
+                  <Form.Control required type="text" placeholder="Enter Address" onChange={(e) => setAddress(e.target.value)} />
                 </Form.Group>
 
                 <div className="input-price">
                   <Row>
                     <Col>
                       <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic" as={CustomToggle} className="w-100" >
+                        <Dropdown.Toggle id="dropdown-basic" as={CustomToggleCity}>
                           <div className="d-flex justify-content-between">
                             {cityDropdown}
                             <span className="ms-5">&#x25bc;</span>
@@ -183,6 +254,7 @@ function InputKosan() {
                           {city.sort((a, b) => a.city_name > b.city_name ? 1 : b.city_name > a.city_name ? -1 : 0).map((e, i) => (
                             <Dropdown.Item key={i} href="#" onClick={() => {
                               setCityDropdown(e.city_name);
+                              setCityIsActive(true);
                               getDistricts(e.id);
                             }}>
                               {e.city_name}
@@ -193,7 +265,7 @@ function InputKosan() {
                     </Col>
                     <Col>
                       <Dropdown >
-                        <Dropdown.Toggle id="dropdown-basic" as={CustomToggle} className="w-100" >
+                        <Dropdown.Toggle id="dropdown-basic" as={CustomToggleDistrict} className="w-100" >
                           <div className="d-flex justify-content-between">
                             {districtDropdown}
                             <span className="ms-5">&#x25bc;</span>
@@ -204,6 +276,8 @@ function InputKosan() {
                             <Dropdown.Item key={i} href="#" onClick={() => {
                               setDistrictDropdown(e.name);
                               setPosition({ lat: e.latitude, lng: e.longitude });
+                              setDistrictData(e.dist_id);
+                              setDistrictIsActive(true);
                             }}>
                               {e.name}
                             </Dropdown.Item>
@@ -215,16 +289,25 @@ function InputKosan() {
                 </div>
 
                 <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic" as={CustomToggle} >
+                  <Dropdown.Toggle id="dropdown-basic" as={CustomToggleGender} >
                     <div className="d-flex justify-content-between">
-                      Gender
+                      {gender !== null ? gender : 'Gender'}
                       <span className="ms-5">&#x25bc;</span>
                     </div>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item>Female</Dropdown.Item>
-                    <Dropdown.Item>Male</Dropdown.Item>
-                    <Dropdown.Item>Mix</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      setGender('Female');
+                      setGenderIsActive(true);
+                    }}>Female</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      setGender('Male');
+                      setGenderIsActive(true);
+                    }}>Male</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      setGender('Mix');
+                      setGenderIsActive(true);
+                    }}>Mix</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
 
@@ -233,14 +316,18 @@ function InputKosan() {
                     <Row>
                       <Col>
                         <Form.Control
+                          required
                           type="number"
                           placeholder="Number of Rooms"
+                          onChange={(e) => setSlotRoom(e.target.value)}
                         />
                       </Col>
                       <Col>
                         <Form.Control
+                          required
                           type="number"
                           placeholder="Available"
+                          onChange={(e) => setAvailable(e.target.value)}
                         />
                       </Col>
                     </Row>
@@ -248,36 +335,32 @@ function InputKosan() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Control type="text" placeholder="Enter Owner Name" />
+                  <Form.Control type="text" placeholder="Enter Owner Name" onChange={(e) => setOwner(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Control
+                    required
                     type="text"
                     placeholder="Enter Owner Phone Number"
+                    onChange={(e) => setOwnerPhone(e.target.value)}
                   />
                 </Form.Group>
 
-                <InputGroup className="mb-3">
+                {/* <InputGroup className="mb-3">
                   <FormControl
                     type="file"
                     placeholder="Upload Image"
                     aria-label="Image"
                     aria-describedby="basic-addon2"
                   />
-                  <InputGroup.Text
-                    className="input-imagebtn"
-                    id="basic-addon2"
-                  >
-                    Upload
-                  </InputGroup.Text>
-                </InputGroup>
+                </InputGroup> */}
               </Col>
 
               <Col xs={6}>
                 <div>
                   <MapContainer id="map-input" center={position} zoom={13} scrollWheelZoom={false}>
-                    <ChangeView center={position} zoom={13} />
+                    <ChangeView center={position} />
                     <TileLayer
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -286,7 +369,7 @@ function InputKosan() {
                   </MapContainer>
                 </div>
 
-                <div className="input-nearbyfacilities">
+                {/* <div className="input-nearbyfacilities">
                   <div className="input-namenearbyfacilities">
                     <h4>Nearby Facilities</h4>
                   </div>
@@ -298,7 +381,7 @@ function InputKosan() {
                       <Form.Control as="textarea" rows={3} />
                     </Form.Group>
                   </div>
-                </div>
+                </div> */}
               </Col>
             </Row>
             <div className="input-wrapdescription">
@@ -308,15 +391,27 @@ function InputKosan() {
               <div className="input-descarea">
                 <Form.Group
                   className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
+                  onChange={(e) => setDescription(e.target.value)}
                 >
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Control as="textarea" rows={3} required />
                 </Form.Group>
               </div>
             </div>
           </div>
-          <div className="input-wrapbutton">
-            <Button className="input-button">Add</Button>
+          <div className="d-flex justify-content-center">
+            <Button className="btn btn-primary" type="submit" disabled={isLoading ? true : false} onClick={() => {
+              if (cityDropdown === 'City' || districtDropdown === 'District' || gender === null) {
+                if (cityDropdown === 'City') {
+                  setCityIsActive(false);
+                }
+                if (districtDropdown === 'District') {
+                  setDistrictIsActive(false);
+                }
+                if (gender === null) {
+                  setGenderIsActive(false);
+                }
+              }
+            }} >{isLoading ? 'Submitting' : 'Submit'}</Button>
           </div>
         </Form>
       </div>
