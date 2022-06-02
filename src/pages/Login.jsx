@@ -3,6 +3,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import axios from "axios";
+import { URL } from '../components/URL';
 
 function Login() {
   const [email, setEmail] = useState();
@@ -41,7 +42,7 @@ function Login() {
     console.log("testing");
 
     axios
-      .post("http://18.136.202.111:8000/login", body)
+      .post(`${URL}/login`, body)
       .then((data) => {
         localStorage.setItem("token", data.data.data);
 

@@ -1,0 +1,1 @@
+export const URL = 'https://galihgpr.cloud.okteto.net';

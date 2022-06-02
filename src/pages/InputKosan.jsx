@@ -10,6 +10,7 @@ import { MapContainer, TileLayer, Popup, Marker, useMap } from "react-leaflet";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/inputkosan.css";
+import {URL} from '../components/URL';
 
 function InputKosan() {
   const [title, setTitle] = useState(''); // title (string)
@@ -35,7 +36,7 @@ function InputKosan() {
   const Navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://18.136.202.111:8000/cities/')
+    axios.get(`${URL}/cities/`)
       .then(data => {
         setCity(data.data.data);
       })
@@ -49,7 +50,7 @@ function InputKosan() {
   };
 
   const getDistricts = async (id) => {
-    const response = await axios.get(`http://18.136.202.111:8000/cities/${id}/districts`, {
+    const response = await axios.get(`${URL}/cities/${id}/districts`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     response.data.data ? setDistrict(response.data.data) : setDistrict([]);
@@ -200,7 +201,7 @@ function InputKosan() {
       }
 
       setIsLoading(true);
-      axios.post('http://18.136.202.111:8000/houses', body, {
+      axios.post(`${URL}/houses`, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
         .then(data => {
