@@ -11,6 +11,7 @@ import ListKosan from "./pages/ListKosan.jsx";
 import InputKosan from "./pages/InputKosan.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import Login from "./pages/Login.jsx";
+import ListRoom from "./pages/ListRoom";
 
 function Testing() {
   return (
@@ -36,6 +37,7 @@ function Testing() {
               <Route path="/riwayatKosan" element={<RiwayatKosan />} />
               <Route path="/listkosan" element={<ListKosan />} />
               <Route path="/managekota" element={<ManageKota />} />
+              <Route path="/list-room/:id" element={<ListRoom />} />
             </Routes>
           </div>
         </div>
