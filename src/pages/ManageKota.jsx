@@ -5,6 +5,7 @@ import "../styles/dasboardAdmin.css";
 import "../styles/manageKota.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { URL } from '../components/URL';
 
 function ManageKota() {
     const [city, setCity] = useState([]);
@@ -34,7 +35,7 @@ function ManageKota() {
 
     useEffect(() => {
         axios
-            .get("http://18.136.202.111:8000/cities", {
+            .get(`${URL}/cities`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((data) => {
@@ -46,7 +47,7 @@ function ManageKota() {
     }, []);
 
     const getDistricts = async (id) => {
-        const response = await axios.get(`http://18.136.202.111:8000/cities/${id}/districts`, {
+        const response = await axios.get(`${URL}/cities/${id}/districts`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         response.data.data ? setDistrict(response.data.data) : setDistrict([]);
@@ -58,14 +59,14 @@ function ManageKota() {
             city_name: addCity,
         };
         axios
-            .post("http://18.136.202.111:8000/cities", body, {
+            .post(`${URL}/cities`, body, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((data) => {
                 handleCloseCreate();
 
                 axios
-                    .get("http://18.136.202.111:8000/cities", {
+                    .get(`${URL}/cities`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
@@ -106,7 +107,7 @@ function ManageKota() {
             city_name: addCity,
         };
         axios
-            .put(`http://18.136.202.111:8000/cities/${idCity}`, body, {
+            .put(`${URL}/cities/${idCity}`, body, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((data) => {
@@ -115,7 +116,7 @@ function ManageKota() {
                 setCityDropdown(addCity);
 
                 axios
-                    .get("http://18.136.202.111:8000/cities", {
+                    .get(`${URL}/cities`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
@@ -159,7 +160,7 @@ function ManageKota() {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete(`http://18.136.202.111:8000/cities/${idCity}`, {
+                    .delete(`${URL}/cities/${idCity}`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
@@ -167,7 +168,7 @@ function ManageKota() {
                     .then((data) => {
                         setCityDropdown("City");
                         axios
-                            .get("http://18.136.202.111:8000/cities", {
+                            .get(`${URL}/cities`, {
                                 headers: {
                                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                                 },
@@ -194,7 +195,7 @@ function ManageKota() {
             city_id: idCity,
         };
         axios
-            .post("http://18.136.202.111:8000/districts", body, {
+            .post(`${URL}/districts`, body, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((data) => {
@@ -235,7 +236,7 @@ function ManageKota() {
             city_id: idCity
         };
 
-        axios.put(`http://18.136.202.111:8000/districts/${id}`, body, {
+        axios.put(`${URL}/districts/${id}`, body, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
             .then(data => {
@@ -280,7 +281,7 @@ function ManageKota() {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://18.136.202.111:8000/districts/${id}`, {
+                axios.delete(`${URL}/districts/${id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },

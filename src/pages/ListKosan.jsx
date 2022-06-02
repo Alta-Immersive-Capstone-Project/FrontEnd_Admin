@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import "../styles/listkosan.css";
 import { useNavigate } from "react-router-dom";
+import { URL } from '../components/URL';
 
 function ListKosan() {
   const [listKosts, setListKosts] = useState([]);
@@ -24,7 +25,7 @@ function ListKosan() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://18.136.202.111:8000/houses",
+          `${URL}/houses`,
 
           {
             headers: {
@@ -33,7 +34,7 @@ function ListKosan() {
           }
         );
         const { data: response2 } = await axios.get(
-          "http://18.136.202.111:8000/cities",
+          `${URL}/cities`,
 
           {
             headers: {
@@ -56,7 +57,7 @@ function ListKosan() {
   const getHouseByCity = async (id) => {
     try {
       const { data: response } = await axios.get(
-        `http://18.136.202.111:8000/cities/${id}/districts/houses`,
+        `${URL}/cities/${id}/districts/houses`,
 
         {
           headers: {

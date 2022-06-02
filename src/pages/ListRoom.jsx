@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Table, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
+import { URL } from '../components/URL';
 
 function ListRoom() {
     const [house, setHouse] = useState();
@@ -11,7 +12,7 @@ function ListRoom() {
 
     useEffect(() => {
 
-        axios.get(`http://18.136.202.111:8000/houses/${params.id}/room`, {
+        axios.get(`${URL}/houses/${params.id}/room`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
             .then(data => {
@@ -21,7 +22,7 @@ function ListRoom() {
                 console.log(err);
             })
 
-        axios.get(`http://18.136.202.111:8000/houses/${params.id}`, {
+        axios.get(`${URL}/houses/${params.id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
             .then(data => {
