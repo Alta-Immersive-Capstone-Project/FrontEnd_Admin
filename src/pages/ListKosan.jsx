@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import "../styles/listkosan.css";
 import { useNavigate } from "react-router-dom";
-import { URL } from '../components/URL';
+import { URL } from "../components/URL";
 
 function ListKosan() {
   const [listKosts, setListKosts] = useState([]);
@@ -153,9 +153,9 @@ function ListKosan() {
                     <td>{el.owner_phone}</td>
                     <td>
                       <Button
-                        className="btnSearch"
+                        className="btn btn-primary"
                         onClick={() => {
-                          navigate(`/riwayatKosan`);
+                          navigate(`/list-room/${el.house_id}`);
                         }}
                       >
                         View

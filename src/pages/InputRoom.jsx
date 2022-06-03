@@ -103,7 +103,7 @@ export default function InputRoom() {
         <div className="form-row my-3">
           <button
             type="submit"
-            className="btn btn-dark"
+            className="btn btn-primary"
             onClick={() => submit()}
           >
             Save
