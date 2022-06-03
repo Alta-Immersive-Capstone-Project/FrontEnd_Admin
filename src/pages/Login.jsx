@@ -3,7 +3,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import axios from "axios";
-import { URL } from '../components/URL';
+import { URL } from "../components/URL";
 
 function Login() {
   const [email, setEmail] = useState();
@@ -44,11 +44,11 @@ function Login() {
     axios
       .post(`${URL}/login`, body)
       .then((data) => {
-        localStorage.setItem("token", data.data.data);
+        localStorage.setItem("token", data.data.data.token);
 
         setMessage("Success Login!");
         setColor("success");
-
+        console.log(data.data);
         setTimeout(() => {
           navigate("/");
         }, 2000);

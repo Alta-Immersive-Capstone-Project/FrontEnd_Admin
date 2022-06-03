@@ -12,6 +12,7 @@ import InputKosan from "./pages/InputKosan.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import Login from "./pages/Login.jsx";
 import ListRoom from "./pages/ListRoom";
+import InputRoom from "./pages/InputRoom.jsx";
 
 function Testing() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/inputkosan" element={<InputKosan />} />
+          <Route path="/inputroom/:id" element={<InputRoom />} />
           <Route path="*" element={<Testing />} />
         </Routes>
       </BrowserRouter>
