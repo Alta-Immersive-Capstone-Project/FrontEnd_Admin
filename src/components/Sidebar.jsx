@@ -56,15 +56,15 @@ function Sidebar() {
                 </div>
               </div>
               <div className="title-sidebar">
-                <h5 onClick={clickDashboard}>Dasboard</h5>
-                <h5 onClick={clickManage}>Manage Boarding House</h5>
-                <h5 onClick={clickBoardingList}>Boarding House List</h5>
-                <h5 onClick={clickStatus}>Transaction History by Status</h5>
-                <h5 onClick={clickBoardingHouse}>
-                  Transaction History by Boarding House
+                <h5 className="cursor-pointer" onClick={clickDashboard}>Dasboard</h5>
+                <h5 className="cursor-pointer" onClick={clickManage}>Manage City/District</h5>
+                <h5 className="cursor-pointer" onClick={clickStatus}>Transaction</h5>
+                <h5 className="cursor-pointer" onClick={clickBoardingList}>Transaction History</h5>
+                <h5 className="cursor-pointer" onClick={clickBoardingHouse}>
+                  Boarding House List
                 </h5>
-                <h5 onClick={clickAdd}>Add Boarding House</h5>
-                <h5 onClick={clickLogout}>Log Out</h5>
+                <h5 className="cursor-pointer" onClick={clickAdd}>Add Boarding House</h5>
+                <h5 className="cursor-pointer" onClick={clickLogout}>Log Out</h5>
               </div>
             </div>
           </div>
