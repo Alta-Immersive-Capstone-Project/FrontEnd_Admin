@@ -22,6 +22,7 @@ function ListKosan() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = "List House";
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(

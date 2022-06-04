@@ -36,6 +36,7 @@ function InputKosan() {
   const Navigate = useNavigate();
 
   useEffect(() => {
+    document.title = "Input House";
     axios.get(`${URL}/cities/`)
       .then(data => {
         setCity(data.data.data);

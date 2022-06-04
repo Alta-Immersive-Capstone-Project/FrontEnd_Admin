@@ -16,6 +16,7 @@ export default function ListPengajuan() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    document.title = "List Order";
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
@@ -30,7 +31,7 @@ export default function ListPengajuan() {
 
         setListTransactions(response.data);
       } catch (error) {
-        console.log(error);
+        setListTransactions([]);
       }
     };
 
