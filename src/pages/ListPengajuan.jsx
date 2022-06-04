@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import "../styles/listPengajuan.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import { URL } from "../components/URL";
 
 export default function ListPengajuan() {
+  const [listTransactions, setListTransactions] = useState([]);
+
+  const Navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get(
+          `${URL}/admin/transactions/kost`,
+
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        setListTransactions(response.data);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -15,34 +46,29 @@ export default function ListPengajuan() {
                   <th>No</th>
                   <th>ID</th>
                   <th>Duration</th>
-                  <th>Custom</th>
+                  <th>Customer</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody className="text-center">
-                <tr>
-                  <td>1</td>
-                  <td>Rdf 1000923742</td>
-                  <td>6 Month</td>
-                  <td>Jerry Young</td>
-                  <td>
-                    <Button className="btnCreate">Create</Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                {listTransactions.map((el, i) => (
+                  <tr style={{ cursor: "pointer" }} key={i}>
+                    <td>{i + 1}</td>
+                    <td>{el.booking_id}</td>
+                    <td>{el.duration} Month</td>
+                    <td>{el.name} </td>
+                    <td>
+                      <Button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          Navigate(`/makeOffering/${el.booking_id}`)
+                        }
+                      >
+                        Create
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </div>
