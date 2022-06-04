@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
@@ -13,6 +13,9 @@ function Login() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "Login";
+  }, [])
   const changeEmail = (e) => {
     const value = e.target.value;
     setEmail(value);

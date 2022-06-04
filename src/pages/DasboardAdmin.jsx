@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Dropdown, Button } from "react-bootstrap";
 import "../styles/dasboardAdmin.css";
 
 export default function DasboardAdmin() {
+
+  useEffect(() => {
+    document.title = "Dashboard";
+  }, []);
+
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <div
       href=""

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 import { URL as url } from "../components/URL";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function InputRoom() {
   const params = useParams();
+
+  const navigate = useNavigate()
 
   const [files, setFiles] = useState({
     file: [],
@@ -14,6 +17,10 @@ export default function InputRoom() {
   const [type, setType] = useState();
   const [price, setPrice] = useState();
   const [additional_description, setAdditional_description] = useState();
+
+  useEffect(() => {
+    document.title = "Input Room";
+  }, [])
 
   const handleInputChange = (event) => {
     setFiles({
@@ -33,10 +40,9 @@ export default function InputRoom() {
     formdata.append("additional_description", additional_description);
     formdata.append("files", files.file);
 
-    for (var pair of formdata.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
+    // for (var pair of formdata.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
     axios
       .post(`${url}/room`, formdata, {
         headers: {
@@ -45,10 +51,28 @@ export default function InputRoom() {
         },
       })
       .then((data) => {
-        console.log(data);
         if (data.data.data === 1) {
           setSuccess("files upload successfully");
         }
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: `Room successfully added`,
+        });
+
+        setTimeout(navigate(`/list-room/${params.id}`), 2000)
+
       });
   };
 
@@ -73,7 +97,7 @@ export default function InputRoom() {
               <Form.Group className="mb-3" controlId="validationCustom02">
                 <Form.Control
                   required
-                  type="text"
+                  type="number"
                   placeholder="price"
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -106,7 +130,7 @@ export default function InputRoom() {
             className="btn btn-primary"
             onClick={() => submit()}
           >
-            Save
+            Submit
           </button>
         </div>
         {files.filepreview !== null ? (

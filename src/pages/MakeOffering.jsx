@@ -17,6 +17,7 @@ export default function MakeOffering() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = "Make Offering";
     if (bookingDetail.length === 0) {
       navigate('/listpengajuan');
     }

@@ -34,6 +34,7 @@ function ManageKota() {
     const handleShowUpdateDistrict = () => setShowUpdateDistrict(true);
 
     useEffect(() => {
+        document.title = "Manage City";
         axios
             .get(`${URL}/cities`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

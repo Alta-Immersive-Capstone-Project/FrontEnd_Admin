@@ -1,8 +1,28 @@
-import React from "react";
-import { Table, Button, Dropdown, Form, FormControl } from "react-bootstrap";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Form, FormControl, Dropdown } from "react-bootstrap";
+import { URL } from "../components/URL";
 import "../styles/riwayatKosan.css";
+import moment from "moment";
 
 export default function RiwayatKosan() {
+  const [riwayat, setRiwayat] = useState([]);
+
+  useEffect(() => {
+    document.title = "History Transaction";
+    axios.get(`${URL}/admin/transactions/kost`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      }
+    })
+      .then(data => {
+        setRiwayat(data.data.data);
+      })
+      .catch(err => {
+        console.log(err, ' ==> error dari riwayat kosan')
+      })
+  }, []);
+
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <div
       href=""
@@ -17,12 +37,24 @@ export default function RiwayatKosan() {
     </div>
   ));
 
+  const makeRupiah = (input) => {
+    let txt = input.toString().split('');
+    let temp = 1;
+    for (let i = txt.length - 1; i > 0; i--) {
+      if (temp % 3 === 0) {
+        txt.splice(i, 0, '.');
+      }
+      temp++;
+    }
+    return txt.join('');
+  }
+
   return (
     <>
       <div className="container">
         <div className="riwayatkosan-row">
           <div className="col-12">
-            <h4 className="my-5">History Boarding_House_Name</h4>
+            <h4 className="my-5">History Transactions</h4>
             <div className="d-flex gap-3 mb-4">
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic" as={CustomToggle}>
@@ -71,33 +103,17 @@ export default function RiwayatKosan() {
                 </tr>
               </thead>
               <tbody className="text-center">
-                <tr>
-                  <td>1</td>
-                  <td>Rdf 1000923742</td>
-                  <td>Jerry Young</td>
-                  <td>1 Month</td>
-                  <td>600,000</td>
-                  <td>24 Juni 2021</td>
-                  <td>success</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                {riwayat.map((el, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{el.booking_id}</td>
+                    <td>{el.name}</td>
+                    <td>{el.duration} Month</td>
+                    <td>Rp{makeRupiah(el.price)}</td>
+                    <td>{moment(el.created_at).format('LL')}</td>
+                    <td>{el.transaction_status}</td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </div>

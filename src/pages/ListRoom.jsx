@@ -14,28 +14,25 @@ function ListRoom() {
   const params = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${URL}/houses/${params.id}/room`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((data) => {
-        setRoom(data.data.data);
-      })
-      .catch((err) => {
+    document.title = `${house} | List Room`;
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get(`${URL}/houses/${params.id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
+        const { data: response2 } = await axios
+          .get(`${URL}/houses/${params.id}/room`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          })
+        setHouse(response.data.title);
+        setRoom(response2.data);
+      } catch (err) {
         console.log(err);
-      });
+      }
+    }
 
-    axios
-      .get(`${URL}/houses/${params.id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((data) => {
-        setHouse(data.data.data.title);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [params]);
+    fetchData();
+  }, [params, house]);
 
   return (
     <div className="container">
