@@ -34,7 +34,7 @@ function Testing() {
             <Routes>
               <Route path="/" element={<DasboardAdmin />} />
               <Route path="/listPengajuan" element={<ListPengajuan />} />
-              <Route path="/makeOffering" element={<MakeOffering />} />
+              <Route path="/makeOffering/:id" element={<MakeOffering />} />
               <Route path="/riwayatKosan" element={<RiwayatKosan />} />
               <Route path="/listkosan" element={<ListKosan />} />
               <Route path="/managekota" element={<ManageKota />} />
