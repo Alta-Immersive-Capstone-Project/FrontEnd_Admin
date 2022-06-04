@@ -5,17 +5,21 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { URL } from "../components/URL";
+import { useDispatch } from "react-redux";
+import { setBooking } from '../store/transaction'
 
 export default function ListPengajuan() {
   const [listTransactions, setListTransactions] = useState([]);
 
   const Navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          `${URL}/admin/transactions/kost`,
+          `${URL}/admin/transactions`,
 
           {
             headers: {
@@ -25,7 +29,6 @@ export default function ListPengajuan() {
         );
 
         setListTransactions(response.data);
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +47,8 @@ export default function ListPengajuan() {
               <thead className="text-center">
                 <tr>
                   <th>No</th>
-                  <th>ID</th>
+                  <th>Booking ID</th>
+                  <th>Boarding House</th>
                   <th>Duration</th>
                   <th>Customer</th>
                   <th>Action</th>
@@ -55,13 +59,16 @@ export default function ListPengajuan() {
                   <tr style={{ cursor: "pointer" }} key={i}>
                     <td>{i + 1}</td>
                     <td>{el.booking_id}</td>
+                    <td>{el.title}</td>
                     <td>{el.duration} Month</td>
                     <td>{el.name} </td>
                     <td>
                       <Button
                         className="btn btn-primary"
-                        onClick={() =>
-                          Navigate(`/makeOffering/${el.booking_id}`)
+                        onClick={() => {
+                          dispatch(setBooking(el));
+                          Navigate(`/makeOffering/${el.booking_id}`);
+                        }
                         }
                       >
                         Create
