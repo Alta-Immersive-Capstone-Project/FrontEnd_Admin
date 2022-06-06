@@ -1,23 +1,15 @@
-# Sewa Kost Admin
+# About This Project
 
-Proyek ini adalah proyek akhir untuk lulus dalam Immersive Program Alterra Academy. Program yang kami buat adalah program untuk melakukan sewa kost.
+Proyek ini adalah kolaborasi antara Frontend dan Backend di program Immersive Alterra Acedemy. Proyek ini adalah tugas akhir untuk hari kelulusan kami. Repository ini adalah bagian Frontend untuk halaman customer.
 
-## Available Scripts
+* Membuat desain UI
+* Integrasi dengan plugin map (Leaflet)
+* Menggunakan Reactjs
+* Deployment
 
-Di Proyek kali ini, dapat melakukan:
 
-### `Login`
-/login
+## UI
+Figma: https://www.figma.com/file/wOYbQqc2gSam6FVGd04vx0/Sewa-Kos?node-id=0%3A1
 
-### `Manage Kota`
-/managekota
-
-### `Input House`
-/inputkosan
-
-### `List Kosan`
-/listkosan
-
-### `List Room`
-/list-room/:id
-
+## Deployment
+https://sewa-kos-admin.vercel.app/
