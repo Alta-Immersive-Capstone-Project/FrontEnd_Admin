@@ -25,7 +25,7 @@ export default function MakeOffering() {
 
   const handleSubmit = () => {
     const body = {
-      price: parseInt(price)
+      price: parseInt(price * bookingDetail.duration)
     };
 
     axios.put(`${URL}/admin/transactions/${id}`, body, {
